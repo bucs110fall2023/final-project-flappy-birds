@@ -3,11 +3,12 @@
 
 # << Project Title >>
 ## CS110 Final Project  << Semester, Year >>
-
+Fall 2023
 ## Team Members
 
 << List team member names >>
-
+Augustine Gonzalez
+Devion Rosa
 ***
 
 ## Project Description
