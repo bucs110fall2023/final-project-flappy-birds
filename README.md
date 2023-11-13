@@ -14,7 +14,7 @@ Devion Rosa
 ## Project Description
 
 << Give an overview of your project >>
-
+A game where a an object is continuosly falling unless the user makes the object rise. The object must make it through diffrent obstancles wihtout touching them. Every obstacle passed is a point gained. If the object touches an obstacle the game is over 
 ***    
 
 ## GUI Design
@@ -31,11 +31,11 @@ Devion Rosa
 
 ### Features
 
-1. << Feature 1 >>
-2. << Feature 2 >>
-3. << Feature 3 >>
-4. << Feature 4 >>
-5. << Feature 5 >>
+1. << Space bar to jump up  >>
+2. << moving background >>
+3. << point counter >>
+4. << falling object >>
+5. <<  >>
 
 ### Classes
 
