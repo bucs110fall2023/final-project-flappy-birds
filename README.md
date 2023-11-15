@@ -35,7 +35,7 @@ A game where a an object is continuosly falling unless the user makes the object
 2. << moving background >>
 3. << point counter >>
 4. << falling object >>
-5. <<  >>
+5. << Push to play >>
 
 ### Classes
 
