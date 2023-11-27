@@ -1,17 +1,13 @@
 import pygame 
 
 class Bird:
-    def __init__(self, x, y):
+    def __init__(self, surface, x, y, imgpath):
         self.x = x
         self.y = y 
-    
-    def jump(self, self.x, self.y):
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    jump_up = True
-                else:
-                    fall_down = True
-                    
+        self.imgpath = str(imgpath)
+        self.surface = surface
+        
+    def drawBird(self):
+        image = pygame.image.load(self.imgpath)
+        self.surface.blit(image, (self.x, self.y))
         
