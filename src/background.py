@@ -1,12 +1,13 @@
 import pygame
 
 class Background:
-    def __init__(self, surface, x, y, imgpath):
+    def __init__(self, surface, imgpath, x = 0 , y = 0):
         self.x = x
-        self.y = y 
+        self.y = y
         self.imgpath = str(imgpath)
         self.surface = surface
+        self.image = pygame.image.load(self.imgpath)
         
     def drawBackground(self):
-        image = pygame.image.load(self.imgpath)
-        self.surface.blit(image, (self.x, self.y))
+        
+        self.surface.blit(self.image, (self.x, self.y))
