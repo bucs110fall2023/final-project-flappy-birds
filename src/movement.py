@@ -11,7 +11,7 @@ class Movement:
         return self.x
     
     def backgroundMove(self):
-        back_shift = (pygame.display.get_window_size()[0])/35
+        back_shift = (pygame.display.get_window_size()[0])/80
         self.x = self.x - back_shift
         return self.x
     
