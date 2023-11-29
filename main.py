@@ -1,5 +1,11 @@
 import pygame
 from src.controller import Controller
+from src.bird import Bird
+from src.background import Background
+from src.ground import Ground
+from src.movement import Movement
+from src.pipe import Pipe
+
 def main():
     pygame.init()
     b = Controller()
