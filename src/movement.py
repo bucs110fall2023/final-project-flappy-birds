@@ -1,28 +1,36 @@
 import pygame
 
 class Movement:
-    def __init__(self, x , y):
+    def __init__(self, x , y, img):
         self.x = x
         self.y = y
-        
+        self.image = img
     def pipeMove(self):
         pipe_shift = (pygame.display.get_window_size()[0])/20
         self.x = self.x - pipe_shift
         return self.x
     
     def backgroundMove(self):
-        back_shift = (pygame.display.get_window_size()[0])/80
+        screen_width = self.image.get_size()[0]
+        back_shift = (pygame.display.get_window_size()[0])/150
         self.x = self.x - back_shift
+        
+        if abs(self.x) > screen_width:
+            self.x = screen_width - 10 
         return self.x
     
     def birdMove(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.x = self.x - (300 * 1.718) + ((1000 * ((1.718) ** 2))/2)
+                self.y = self.y - (300 * 1.718) + ((1000 * ((1.718) ** 2))/2)
             else:
-                self.x = self.x + ((1000 * ((1.718) ** 2))/2)
+                self.y = self.y + ((1000 * ((1.718) ** 2))/2)
     
     def groundMove(self):
-        ground_shift = (pygame.display.get_window_size()[0])/20
+        image_width = self.image.get_size()[0]
+        ground_shift = (pygame.display.get_window_size()[0])/150
         self.x = self.x - ground_shift
+        
+        if abs(self.x) > image_width:
+            self.x = image_width - 10 
         return self.x

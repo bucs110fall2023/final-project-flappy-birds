@@ -7,6 +7,5 @@ class Background:
         self.imgpath = str(imgpath)
         self.surface = surface
         self.image = pygame.image.load(self.imgpath)
-        
     def drawBackground(self):
         self.surface.blit(self.image, (self.x, self.y))
