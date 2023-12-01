@@ -119,10 +119,6 @@ class Controller:
             ground2.drawGround()
             ground2.x = ground2_move.groundMove()
             
-
-            
-            print(len(self.bottompipes))
-            
             
             for b in self.bottompipes:
                 
@@ -137,7 +133,7 @@ class Controller:
                     self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
                     
             
-            print(b.x,b.y)
+
 
                 
             
