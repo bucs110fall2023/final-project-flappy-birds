@@ -11,8 +11,8 @@ class Controller:
         pygame.init()
         self.screen = pygame.display.set_mode()
         
-        self.bottompipes = pygame.sprite.Group()
-        self.toppipes = pygame.sprite.Group()
+        self.pipes = pygame.sprite.Group()
+
     
     def mainloop(self):
 
@@ -96,17 +96,10 @@ class Controller:
         ground2_move = Movement(ground2.x, ground2.y, ground2.image)
         
         bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
-        self.bottompipes.add(bottompipe)
+        self.pipes.add(bottompipe)
         
-<<<<<<< HEAD
-        toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, 400)
-        self.toppipes.add(bottompipe)
-        top_move = Movement(bottompipe.x, bottompipe.y)
-=======
-        toppipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
-        self.bottompipes.add(toppipe)
-
->>>>>>> ff9b1d0 (12/1)
+        toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, -400)
+        self.pipes.add(toppipe)
 
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
         
@@ -123,12 +116,8 @@ class Controller:
             ground2.drawGround()
             ground2.x = ground2_move.groundMove()
             
-
-            
-            print(len(self.bottompipes))
-            
-            
-            for b in self.bottompipes:
+           
+            for b in self.pipes:
                 
                 pipe_move = Movement(b.x, b.y)
                 b.drawPipe()
@@ -141,14 +130,11 @@ class Controller:
                     #self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
                 if b.x < -200:
                     b.kill()
-                    self.bottompipes.remove(b)
+                    self.pipes.remove(b)
                     if b.imgpath == "assets/bottompipe.png":
-                        self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
+                        self.pipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
                     if b.imgpath == "assets/toppipe.png":
-                        self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, -400))
-                    
-            
-            print(b.x,b.y)
+                        self.pipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, -400))
 
                 
             
