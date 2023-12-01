@@ -7,7 +7,7 @@ class Pipe(pygame.sprite.Sprite):
         image = pygame.image.load(imgpath)
         og_width, og_height = image.get_size()
         
-        self.image = pygame.transform.scale(image, (og_width/2, og_height/2))
+        self.image = pygame.transform.scale(image, (og_width/3, og_height/3))
         
         self.rect = self.image.get_rect()
         self.x = x
