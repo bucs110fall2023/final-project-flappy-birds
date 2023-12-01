@@ -99,7 +99,7 @@ class Controller:
         self.bottompipes.add(bottompipe)
         bottompipe_move = Movement(bottompipe.x, bottompipe.y)
         
-        toppipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
+        toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, 400)
         self.toppipes.add(bottompipe)
         top_move = Movement(bottompipe.x, bottompipe.y)
 
