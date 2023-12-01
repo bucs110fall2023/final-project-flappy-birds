@@ -6,13 +6,13 @@ class Movement:
         self.y = y
         self.image = img
     def pipeMove(self):
-        pipe_shift = (pygame.display.get_window_size()[0])/300
+        pipe_shift = (pygame.display.get_window_size()[0])/250
         self.x = self.x - pipe_shift
         return self.x
     
     def backgroundMove(self):
         screen_width = self.image.get_size()[0]
-        back_shift = (pygame.display.get_window_size()[0])/300
+        back_shift = (pygame.display.get_window_size()[0])/250
         self.x = self.x - back_shift
         
         if abs(self.x) > screen_width:
@@ -28,7 +28,7 @@ class Movement:
     
     def groundMove(self):
         image_width = self.image.get_size()[0]
-        ground_shift = (pygame.display.get_window_size()[0])/300
+        ground_shift = (pygame.display.get_window_size()[0])/250
         self.x = self.x - ground_shift
         
         if abs(self.x) > image_width:
