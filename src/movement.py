@@ -21,7 +21,7 @@ class Movement:
     
     def birdMove(self):
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.y = self.y - (300 * 1.718) + ((1000 * ((1.718) ** 2))/2)
             else:
                 self.y = self.y + ((1000 * ((1.718) ** 2))/2)
