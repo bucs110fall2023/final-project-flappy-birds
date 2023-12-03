@@ -166,7 +166,7 @@ class Controller:
                         self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
             
             bird.drawBird()
-            bird_move.t += 1/60
+            bird_move.t += 1/40
             bird.y = bird_move.birdJump()
             
 
