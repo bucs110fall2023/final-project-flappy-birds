@@ -1,10 +1,11 @@
 import pygame
 
 class Movement:
-    def __init__(self, x , y, img = None):
+    def __init__(self, x , y, img = None, t=0):
         self.x = x
         self.y = y
         self.image = img
+        self.t = t
     def pipeMove(self):
         pipe_shift = (pygame.display.get_window_size()[0])/250
         self.x = self.x - pipe_shift
@@ -19,12 +20,9 @@ class Movement:
             self.x = screen_width - 10 
         return self.x
     
-    def birdMove(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.y = self.y - (300 * 1.718) + ((1000 * ((1.718) ** 2))/2)
-            else:
-                self.y = self.y + ((1000 * ((1.718) ** 2))/2)
+    def birdJump(self):
+        self.y = self.y -(20*self.t)+ ((1/2) * (60) * ((self.t)**2))
+        return self.y
     
     def groundMove(self):
         image_width = self.image.get_size()[0]

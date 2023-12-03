@@ -1,13 +1,16 @@
 import pygame 
 
-class Bird:
-    def __init__(self, surface, x, y, imgpath):
+class Bird(pygame.sprite.Sprite):
+    def __init__(self, surface, imgpath, x, y):
+        super().__init__()
         self.x = x
         self.y = y 
         self.imgpath = str(imgpath)
         self.surface = surface
         
+        image = pygame.image.load(self.imgpath)        
+        self.image = pygame.transform.scale(image, (80, 80))
+        
     def drawBird(self):
-        image = pygame.image.load(self.imgpath)
-        self.surface.blit(image, (self.x, self.y))
+        self.surface.blit(self.image, (self.x, self.y))
         

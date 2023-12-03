@@ -1,8 +1,10 @@
 import pygame
+import random
 from src.background import Background
 from src.movement import Movement
 from src.ground import Ground
 from src.pipe import Pipe
+from src.bird import Bird
 
 
 class Controller:
@@ -11,8 +13,7 @@ class Controller:
         pygame.init()
         self.screen = pygame.display.set_mode()
         
-        self.pipes = pygame.sprite.Group()
-
+        self.bottompipes = pygame.sprite.Group()
     
     def mainloop(self):
 
@@ -52,8 +53,13 @@ class Controller:
 
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
         
+        bird = None
+        bird_drawn = False
+        play_button_draw = True
+        
         while self.state == "MENU" :
             
+
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -66,14 +72,25 @@ class Controller:
             ground2.drawGround()
             ground2.x = ground2_move.groundMove()
             
-            
-            play_button = pygame.draw.rect(self.screen, (223, 218, 151), (background_width/3, (background_height + ground_height)/2, background_width/3, ground_height))
+          
+            if play_button_draw == True:
+                play_button = pygame.draw.rect(self.screen, (223, 218, 151), (background_width/3, (background_height + ground_height)/2, background_width/3, ground_height))
             
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if play_button.collidepoint(event.pos):
+                        play_button_draw = False
+                        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+                        bird_drawn = True
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    if bird:
+                        print("hi")
+                        bird.kill()
                         self.state = "GAME"
                         
+            if bird_drawn == True:
+                bird.drawBird()
+                
             pygame.display.flip()
             clock.tick(60)
         
@@ -96,14 +113,26 @@ class Controller:
         ground2_move = Movement(ground2.x, ground2.y, ground2.image)
         
         bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
-        self.pipes.add(bottompipe)
+        self.bottompipes.add(bottompipe)
+        bottompipe2 = Pipe(self.screen, "assets/bottompipe.png", background_width + (background_width)/2 , 400)
+        self.bottompipes.add(bottompipe2)
         
         toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, -400)
-        self.pipes.add(toppipe)
-
+        self.bottompipes.add(toppipe)
+        toppipe2 = Pipe(self.screen, "assets/toppipe.png", background_width + (background_width)/2, -400)
+        self.bottompipes.add(toppipe2)
+        
+        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+        bird_move = Movement(bird.x, bird.y)
+        bird_move.t = 0
+        
+        
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
+        fall = True
         
         while self.state == "GAME" :
+            
+
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -116,28 +145,37 @@ class Controller:
             ground2.drawGround()
             ground2.x = ground2_move.groundMove()
             
-           
-            for b in self.pipes:
+            y = random.randint(int(((1/3)*(background_height))+35),int(background_height-35))
+            for b in self.bottompipes:
                 
                 pipe_move = Movement(b.x, b.y)
                 b.drawPipe()
                 b.x = pipe_move.pipeMove()    
-                 
-                #if b.x < -200:
-                    #b.kill()
-                    #print(b.x,b.y)
-                    #self.bottompipes.remove(b)
-                    #self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
+
                 if b.x < -200:
                     b.kill()
-                    self.pipes.remove(b)
+                    self.bottompipes.remove(b)
+                    
+                    space_in_between = 200
+                    
                     if b.imgpath == "assets/bottompipe.png":
-                        self.pipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, 400))
+                        self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, y))
                     if b.imgpath == "assets/toppipe.png":
-                        self.pipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, -400))
-
-                
+                        self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
             
+            bird.drawBird()
+            bird_move.t += 1/60
+            bird.y = bird_move.birdJump()
+            
+
+            
+            # for event in pygame.event.get():
+            #     if event.type == pygame.MOUSEBUTTONDOWN:
+            #         pass
+            #     else:
+                   
+            #         print(bird.y)
+                    
             pygame.display.flip()
             clock.tick(60)
             
