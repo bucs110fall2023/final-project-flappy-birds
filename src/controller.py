@@ -132,7 +132,9 @@ class Controller:
         
         while self.state == "GAME" :
             
-
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    bird_move.t = 0
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -169,12 +171,8 @@ class Controller:
             
 
             
-            # for event in pygame.event.get():
-            #     if event.type == pygame.MOUSEBUTTONDOWN:
-            #         pass
-            #     else:
-                   
-            #         print(bird.y)
+
+
                     
             pygame.display.flip()
             clock.tick(60)
