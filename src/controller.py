@@ -50,16 +50,23 @@ class Controller:
         ground_width, ground_height = ground1.image.get_size()        
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
         ground2_move = Movement(ground2.x, ground2.y, ground2.image)
+        
+        font_path = 'assets/FlappyBirdy.ttf'
+        font_size = int(background_width/6)
+        custom_font = pygame.font.Font(font_path, font_size)
+        text = "Jumpy Birdy"
+        
+        border_width = 5
 
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
         
         bird = None
         bird_drawn = False
         play_button_draw = True
+        exit_button_draw = True
+        
         
         while self.state == "MENU" :
-            
-
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -72,16 +79,32 @@ class Controller:
             ground2.drawGround()
             ground2.x = ground2_move.groundMove()
             
+
+
+            
           
             if play_button_draw == True:
-                play_button = pygame.draw.rect(self.screen, (223, 218, 151), (background_width/3, (background_height + ground_height)/2, background_width/3, ground_height))
-            
+                
+                text_rendered = custom_font.render(text, True, "black")  
+                self.screen.blit(text_rendered, (background_width/4, background_height/3))
+                play_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , (background_height + ground_height)/2, background_width/6, ground_height))
+                border_play_button = pygame.draw.rect(self.screen, "black", (((background_width/3) - 10) - border_width , ((background_height + ground_height)/2)- border_width , (background_width/6) + (2* border_width), (ground_height) + (2* border_width)), border_width)
+                
+            if exit_button_draw == True:
+                exit_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/2) + 10, (background_height + ground_height)/2, background_width/6, ground_height))
+                exit_button_border = pygame.draw.rect(self.screen, "black", (((background_width/2) + 10) - border_width , ((background_height + ground_height)/2) - border_width, (background_width/6) + (2* border_width), (ground_height)+ (2* border_width)), border_width)
+                
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if play_button.collidepoint(event.pos):
                         play_button_draw = False
+                        exit_button_draw = False
                         bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
                         bird_drawn = True
+                    elif exit_button.collidepoint(event.pos):
+                        pygame.quit()
+                if event.type == pygame.QUIT:
+                        pygame.quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     if bird:
                         print("hi")
@@ -122,8 +145,8 @@ class Controller:
         toppipe2 = Pipe(self.screen, "assets/toppipe.png", background_width + (background_width)/2, -400)
         self.bottompipes.add(toppipe2)
         
-        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
-        bird_move = Movement(bird.x, bird.y)
+        game_bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+        bird_move = Movement(game_bird.x, game_bird.y)
         bird_move.t = 0
         
         
@@ -135,6 +158,9 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     bird_move.t = 0
+                elif event.type == pygame.QUIT:
+                    pygame.quit()
+
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -165,9 +191,16 @@ class Controller:
                     if b.imgpath == "assets/toppipe.png":
                         self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
             
-            bird.drawBird()
+            collisions = pygame.sprite.spritecollide(game_bird, self.bottompipes, False)
+
+            if not collisions:
+                print("BYEEEE")
+            if game_bird.y > background_height:
+                self.state = "END"
+            
+            game_bird.drawBird()
             bird_move.t += 1/40
-            bird.y = bird_move.birdJump()
+            game_bird.y = bird_move.birdJump()
             
 
             
@@ -181,4 +214,4 @@ class Controller:
         
     
     def endloop(self):
-        pass
+        pygame.quit()
