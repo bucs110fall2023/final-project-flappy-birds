@@ -207,16 +207,15 @@ class Controller:
             game_bird.rect.y = bird_move.birdJump()
             game_birdspeed = bird_move.birdSpeed()
 
-            game_bird.drawBird()
             
-            #if int(game_birdspeed) > 0:
-                #game_bird.rect.y = bird_move.birdFall()
-                #game_bird.drawFallBird()
-                #game_bird.fall_rotation_angle += 2
-            #elif int(game_birdspeed) < 0:
-                #game_bird.drawJumpBird()
-                #game_bird.rise_rotation_angle +=5
-
+            if int(game_birdspeed) > 0:
+                game_bird.rect.y = bird_move.birdFall()
+                game_bird.drawFallBird()
+                game_bird.rise_rotation_angle += 2
+            elif int(game_birdspeed) < 0:
+                game_bird.drawJumpBird()
+                game_bird.fall_rotation_angle += 1
+                print("up")
     
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))

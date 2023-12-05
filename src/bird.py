@@ -20,11 +20,11 @@ class Bird(pygame.sprite.Sprite):
         self.surface.blit(self.image, (self.rect.x, self.rect.y)) 
     
     def drawJumpBird(self):
-        self.image = pygame.transform.rotate(self.image, self.rise_rotation_angle)
-        self.surface.blit(self.image, (self.rect.x, self.rect.y))
+        self.rotated_image = pygame.transform.rotate(self.image, self.rise_rotation_angle)
+        self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         
         
     def drawFallBird(self):
-        self.image = pygame.transform.rotate(self.image, -self.fall_rotation_angle)
-        self.surface.blit(self.image, (self.rect.x, self.rect.y))
+        self.rotated_image = pygame.transform.rotate(self.image, self.rise_rotation_angle)
+        self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         
