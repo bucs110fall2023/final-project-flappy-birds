@@ -78,11 +78,7 @@ class Controller:
             ground1.rect.x = ground1_move.groundMove()
             ground2.drawGround()
             ground2.rect.x = ground2_move.groundMove()
-            
-
-
-            
-          
+        
             if play_button_draw == True:
                 
                 text_rendered = custom_font.render(text, True, "black")  
@@ -114,13 +110,11 @@ class Controller:
                 bird.drawBird()
                 
             pygame.display.flip()
-            clock.tick(60)
-        
+            clock.tick(60)  
         
     def gameloop(self):
         
-        clock = pygame.time.Clock()
-        
+        clock = pygame.time.Clock() 
         
         background1 = Background(self.screen, "assets/background.png")
         back1_move = Movement(background1.x, background1.y, background1.image)
@@ -151,10 +145,8 @@ class Controller:
         font_size = int(background_width/8)
         custom_font = pygame.font.Font('assets/flappybirdnums.ttf', font_size)
         self.score_count = 0
-        score = str(self.score_count)
-        
-        
-        
+        score = str(self.score_count)        
+
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
         print(background_width)
         
@@ -163,6 +155,7 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     bird_move.t = 0
+
                 elif event.type == pygame.QUIT:
                     pygame.quit()
 
@@ -184,11 +177,9 @@ class Controller:
                 pipe_move = Movement(b.rect.x, b.rect.y)
                 b.drawPipe()
                 b.rect.x = pipe_move.pipeMove()   
-                #print(f'{b.rect.x}:pipex, {game_bird.rect.x}:birdx')
-
 
                 if b.rect.x < -100:
-                    print("bye")
+
                     b.kill()
                     self.bottompipes.remove(b)
                     
@@ -204,13 +195,7 @@ class Controller:
                     
                 if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
-                    score = str(int(self.score_count))
-                    print("HI")
-
-            
-
-            
-                    
+                    score = str(int(self.score_count))                  
                     
             if pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
@@ -220,16 +205,20 @@ class Controller:
             game_bird.drawBird()
             bird_move.t += 1/40
             game_bird.rect.y = bird_move.birdJump()
+            game_birdspeed = bird_move.birdSpeed()
+
+            
+            if int(game_birdspeed) > 0:
+                print('down')
+            elif int(game_birdspeed) < 0:
+                print("up")
     
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))
                   
             pygame.display.flip()
             clock.tick(60)
-            
-            
-        
-    
+          
     def endloop(self):
         while self.state == "END":
             for event in pygame.event.get():
