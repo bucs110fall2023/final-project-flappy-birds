@@ -51,6 +51,9 @@ class Controller:
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
         ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
         
+        
+        play_buttonimg = pygame.image.load("assets/button.png")
+        scaled_button = pygame.transform.scale(play_buttonimg, (background_width/6, ground_height))
 
         font_size = int(background_width/6)
         custom_font = pygame.font.Font('assets/FlappyBirdy.ttf', font_size)
@@ -85,6 +88,7 @@ class Controller:
                 self.screen.blit(text_rendered, (background_width/4, background_height/3))
                 play_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , (background_height + ground_height)/2, background_width/6, ground_height))
                 border_play_button = pygame.draw.rect(self.screen, "black", (((background_width/3) - 10) - border_width , ((background_height + ground_height)/2)- border_width , (background_width/6) + (2* border_width), (ground_height) + (2* border_width)), border_width)
+                self.screen.blit(scaled_button, ((background_width/3) - 10 , (background_height + ground_height)/2))
                 
             if exit_button_draw == True:
                 exit_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/2) + 10, (background_height + ground_height)/2, background_width/6, ground_height))
@@ -204,18 +208,24 @@ class Controller:
             
             
             bird_move.t += 1/40
-            game_bird.rect.y = bird_move.birdJump()
+            
             game_birdspeed = bird_move.birdSpeed()
 
             
             if int(game_birdspeed) > 0:
                 game_bird.rect.y = bird_move.birdFall()
-                game_bird.drawFallBird()
-                game_bird.rise_rotation_angle += 2
+                game_bird.rotation_angle -= 5
+                if game_bird.rotation_angle < -90:
+                    game_bird.rotation_angle = -90
+                    
             elif int(game_birdspeed) < 0:
-                game_bird.drawJumpBird()
-                game_bird.fall_rotation_angle += 1
-                print("up")
+                game_bird.rect.y = bird_move.birdJump()
+                game_bird.rotation_angle += 20
+                if game_bird.rotation_angle > 45:
+                    game_bird.rotation_angle = 45
+
+                
+            game_bird.drawJumpBird()
     
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))

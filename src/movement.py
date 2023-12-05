@@ -21,17 +21,17 @@ class Movement:
         return self.x
     
     def birdJump(self):
-        self.y = self.y -(30*self.t)+ ((1/2) * (80) * ((self.t) ** 2))
+        self.y = self.y -(50*self.t)+ ((1/2) * (80) * ((self.t) ** 2))
+        return self.y
+    
+    def birdFall(self):
+        self.y = self.y + 5
         return self.y
     
     def birdSpeed(self):
-        self.speed = -30+ (80*self.t)
+        self.speed = -50+ (80*self.t)
         return self.speed
-    
-    def birdFall(self):
-        self.y = self.y - (1/2)*(self.t)
-        return self.y
-    
+
     def groundMove(self):
         image_width = self.image.get_size()[0]
         ground_shift = (pygame.display.get_window_size()[0])/250

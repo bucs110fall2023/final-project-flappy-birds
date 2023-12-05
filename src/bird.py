@@ -6,8 +6,8 @@ class Bird(pygame.sprite.Sprite):
 
         self.imgpath = str(imgpath)
         self.surface = surface
-        self.rise_rotation_angle = 5
-        self.fall_rotation_angle = 5
+        self.rotation_angle = 0
+
         
         image = pygame.image.load(self.imgpath)    
             
@@ -20,11 +20,8 @@ class Bird(pygame.sprite.Sprite):
         self.surface.blit(self.image, (self.rect.x, self.rect.y)) 
     
     def drawJumpBird(self):
-        self.rotated_image = pygame.transform.rotate(self.image, self.rise_rotation_angle)
+        self.rotated_image = pygame.transform.rotate(self.image, self.rotation_angle)
         self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         
         
-    def drawFallBird(self):
-        self.rotated_image = pygame.transform.rotate(self.image, self.rise_rotation_angle)
-        self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         
