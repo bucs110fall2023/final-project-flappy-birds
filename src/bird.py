@@ -9,9 +9,10 @@ class Bird(pygame.sprite.Sprite):
         self.rotation_angle = 0
 
         
-        image = pygame.image.load(self.imgpath)    
+        image = pygame.image.load(self.imgpath)
+        image_width, image_height = image.get_size()    
             
-        self.image = pygame.transform.scale(image, (80, 80))
+        self.image = pygame.transform.scale(image, (image_width/10, image_height/10))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y 
