@@ -136,15 +136,15 @@ class Controller:
         
         bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
         self.bottompipes.add(bottompipe)
-        bottompipe2 = Pipe(self.screen, "assets/bottompipe.png", background_width + (background_width)/2 , 400)
+        bottompipe2 = Pipe(self.screen, "assets/bottompipe.png", (background_width + (background_width)/2)-2 , 400)
         self.bottompipes.add(bottompipe2)
         
         toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, -400)
         self.bottompipes.add(toppipe)
-        toppipe2 = Pipe(self.screen, "assets/toppipe.png", background_width + (background_width)/2, -400)
+        toppipe2 = Pipe(self.screen, "assets/toppipe.png", (background_width + (background_width)/2)-2, -400)
         self.bottompipes.add(toppipe2)
         
-        game_bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+        game_bird = Bird(self.screen, "assets/blueflappybird.png",(background_width/3) , background_height/2 )
         bird_move = Movement(game_bird.rect.x, game_bird.rect.y)
         bird_move.t = 0
         
@@ -156,7 +156,7 @@ class Controller:
         
         
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
-
+        print(background_width)
         
         while self.state == "GAME" :
             
@@ -183,10 +183,12 @@ class Controller:
                 
                 pipe_move = Movement(b.rect.x, b.rect.y)
                 b.drawPipe()
-                b.rect.x = pipe_move.pipeMove()    
+                b.rect.x = pipe_move.pipeMove()   
+                #print(f'{b.rect.x}:pipex, {game_bird.rect.x}:birdx')
 
 
                 if b.rect.x < -100:
+                    print("bye")
                     b.kill()
                     self.bottompipes.remove(b)
                     
@@ -200,9 +202,10 @@ class Controller:
                 if pygame.sprite.collide_rect(game_bird, b):
                     self.state = "END"
                     
-                if b.rect.x == game_bird.rect.x:
+                if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
                     score = str(int(self.score_count))
+                    print("HI")
 
             
 
