@@ -10,9 +10,9 @@ class Pipe(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(image, (og_width/3, og_height/3))
         
         self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y 
+        self.rect.x = x
+        self.rect.y = y 
         self.surface = surface
    
     def drawPipe(self):
-        self.surface.blit(self.image, (self.x, self.y))
+        self.surface.blit(self.image, (self.rect.x, self.rect.y))

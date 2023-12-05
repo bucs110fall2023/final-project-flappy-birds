@@ -46,14 +46,14 @@ class Controller:
         back2_move = Movement(background2.x, background2.y, background2.image)
         
         ground1 = Ground(self.screen, "assets/ground.png", 0, background_height)
-        ground1_move = Movement(ground1.x, ground1.y, ground1.image)
+        ground1_move = Movement(ground1.rect.x, ground1.rect.y, ground1.image)
         ground_width, ground_height = ground1.image.get_size()        
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
-        ground2_move = Movement(ground2.x, ground2.y, ground2.image)
+        ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
         
-        font_path = 'assets/FlappyBirdy.ttf'
+
         font_size = int(background_width/6)
-        custom_font = pygame.font.Font(font_path, font_size)
+        custom_font = pygame.font.Font('assets/FlappyBirdy.ttf', font_size)
         text = "Jumpy Birdy"
         
         border_width = 5
@@ -75,9 +75,9 @@ class Controller:
             background2.x = back2_move.backgroundMove()
             
             ground1.drawGround()
-            ground1.x = ground1_move.groundMove()
+            ground1.rect.x = ground1_move.groundMove()
             ground2.drawGround()
-            ground2.x = ground2_move.groundMove()
+            ground2.rect.x = ground2_move.groundMove()
             
 
 
@@ -107,7 +107,6 @@ class Controller:
                         pygame.quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     if bird:
-                        print("hi")
                         bird.kill()
                         self.state = "GAME"
                         
@@ -130,10 +129,10 @@ class Controller:
         back2_move = Movement(background2.x, background2.y, background2.image)
         
         ground1 = Ground(self.screen, "assets/ground.png", 0, background_height)
-        ground1_move = Movement(ground1.x, ground1.y, ground1.image)
+        ground1_move = Movement(ground1.rect.x, ground1.rect.y, ground1.image)
         ground_width, ground_height = ground1.image.get_size()        
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
-        ground2_move = Movement(ground2.x, ground2.y, ground2.image)
+        ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
         
         bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
         self.bottompipes.add(bottompipe)
@@ -146,12 +145,18 @@ class Controller:
         self.bottompipes.add(toppipe2)
         
         game_bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
-        bird_move = Movement(game_bird.x, game_bird.y)
+        bird_move = Movement(game_bird.rect.x, game_bird.rect.y)
         bird_move.t = 0
+        
+        font_size = int(background_width/8)
+        custom_font = pygame.font.Font('assets/flappybirdnums.ttf', font_size)
+        self.score_count = 0
+        score = str(self.score_count)
+        
         
         
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
-        fall = True
+
         
         while self.state == "GAME" :
             
@@ -169,18 +174,19 @@ class Controller:
             background2.x = back2_move.backgroundMove()
             
             ground1.drawGround()
-            ground1.x = ground1_move.groundMove()
+            ground1.rect.x = ground1_move.groundMove()
             ground2.drawGround()
-            ground2.x = ground2_move.groundMove()
+            ground2.rect.x = ground2_move.groundMove()
             
             y = random.randint(int(((1/3)*(background_height))+35),int(background_height-35))
             for b in self.bottompipes:
                 
-                pipe_move = Movement(b.x, b.y)
+                pipe_move = Movement(b.rect.x, b.rect.y)
                 b.drawPipe()
-                b.x = pipe_move.pipeMove()    
+                b.rect.x = pipe_move.pipeMove()    
 
-                if b.x < -200:
+
+                if b.rect.x < -100:
                     b.kill()
                     self.bottompipes.remove(b)
                     
@@ -190,23 +196,31 @@ class Controller:
                         self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, y))
                     if b.imgpath == "assets/toppipe.png":
                         self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
-            
-            collisions = pygame.sprite.spritecollide(game_bird, self.bottompipes, False)
 
-            if not collisions:
-                print("BYEEEE")
-            if game_bird.y > background_height:
+                if pygame.sprite.collide_rect(game_bird, b):
+                    self.state = "END"
+                    
+                if b.rect.x == game_bird.rect.x:
+                    self.score_count += 0.5
+                    score = str(int(self.score_count))
+
+            
+
+            
+                    
+                    
+            if pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
+            elif pygame.sprite.collide_rect(game_bird, ground2):
+                self.state  = "END"
             
             game_bird.drawBird()
             bird_move.t += 1/40
-            game_bird.y = bird_move.birdJump()
-            
-
-            
-
-
-                    
+            game_bird.rect.y = bird_move.birdJump()
+    
+            text_rendered = custom_font.render(score, True, "black")  
+            self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))
+                  
             pygame.display.flip()
             clock.tick(60)
             
@@ -214,4 +228,7 @@ class Controller:
         
     
     def endloop(self):
-        pygame.quit()
+        while self.state == "END":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()

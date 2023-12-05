@@ -7,12 +7,13 @@ class Bird(pygame.sprite.Sprite):
         self.imgpath = str(imgpath)
         self.surface = surface
         
-        image = pygame.image.load(self.imgpath)        
+        image = pygame.image.load(self.imgpath)    
+            
         self.image = pygame.transform.scale(image, (80, 80))
         self.rect = self.image.get_rect()
-        self.x = x
-        self.y = y 
+        self.rect.x = x
+        self.rect.y = y 
         
     def drawBird(self):
-        self.surface.blit(self.image, (self.x, self.y))
+        self.surface.blit(self.image, (self.rect.x, self.rect.y))
         
