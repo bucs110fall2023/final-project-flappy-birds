@@ -13,6 +13,7 @@ class Pipe(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y 
         self.surface = surface
+        self.mask = pygame.mask.from_surface(self.image)
    
     def drawPipe(self):
         self.surface.blit(self.image, (self.rect.x, self.rect.y))

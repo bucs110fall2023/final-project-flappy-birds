@@ -118,47 +118,59 @@ class Controller:
         
     def gameloop(self):
         
-        clock = pygame.time.Clock() 
-        
+        fall_counter = 0
+        jump = True
+        space_in_between = 200
+
+        clock = pygame.time.Clock()
+
         background1 = Background(self.screen, "assets/background.png")
         back1_move = Movement(background1.x, background1.y, background1.image)
         background_width, background_height = background1.image.get_size()
         background2 = Background(self.screen, "assets/background.png", background_width)
         back2_move = Movement(background2.x, background2.y, background2.image)
-        
+
         ground1 = Ground(self.screen, "assets/ground.png", 0, background_height)
         ground1_move = Movement(ground1.rect.x, ground1.rect.y, ground1.image)
-        ground_width, ground_height = ground1.image.get_size()        
+        ground_width, ground_height = ground1.image.get_size()       
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
         ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
-        
-        bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, 400)
+
+        by = random.randint(int(((1/3)*(background_height))+35),int(background_height-35))
+        bottompipe = Pipe(self.screen, "assets/bottompipe.png", background_width, by)
         self.bottompipes.add(bottompipe)
-        bottompipe2 = Pipe(self.screen, "assets/bottompipe.png", (background_width + (background_width)/2)-2 , 400)
+        b2y = random.randint(int(((1/3)*(background_height))+35),int(background_height-35))
+        bottompipe2 = Pipe(self.screen, "assets/bottompipe.png", (background_width + (background_width)/2)-2 , b2y)
         self.bottompipes.add(bottompipe2)
-        
-        toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, -400)
+
+        ty = by - space_in_between - bottompipe.image.get_size()[1]
+        toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, ty)
         self.bottompipes.add(toppipe)
-        toppipe2 = Pipe(self.screen, "assets/toppipe.png", (background_width + (background_width)/2)-2, -400)
+        ty2 = b2y - space_in_between - bottompipe2.image.get_size()[1]
+        toppipe2 = Pipe(self.screen, "assets/toppipe.png", (background_width + (background_width)/2)-2, ty2)
         self.bottompipes.add(toppipe2)
-        
+
         game_bird = Bird(self.screen, "assets/blueflappybird.png",(background_width/3) , background_height/2 )
         bird_move = Movement(game_bird.rect.x, game_bird.rect.y)
         bird_move.t = 0
-        
+
         font_size = int(background_width/8)
         custom_font = pygame.font.Font('assets/flappybirdnums.ttf', font_size)
         self.score_count = 0
-        score = str(self.score_count)        
+        score = str(self.score_count)       
+
 
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
-        print(background_width)
+
         
         while self.state == "GAME" :
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    bird_move.t = 0
+                    bird_move.t = 0 
+
+                    fall_counter = 0
+                    jump = True
 
                 elif event.type == pygame.QUIT:
                     pygame.quit()
@@ -193,13 +205,14 @@ class Controller:
                         self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, y))
                     if b.imgpath == "assets/toppipe.png":
                         self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
-
-                if pygame.sprite.collide_rect(game_bird, b):
-                    self.state = "END"
-                    
+                            
                 if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
-                    score = str(int(self.score_count))                  
+                    score = str(int(self.score_count)) 
+                    
+            if pygame.sprite.spritecollide(game_bird, self.bottompipes, False, pygame.sprite.collide_mask):
+                self.state = "END"
+                print("hi")                 
                     
             if pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
@@ -211,21 +224,28 @@ class Controller:
             
             game_birdspeed = bird_move.birdSpeed()
 
-            
-            if int(game_birdspeed) > 0:
-                game_bird.rect.y = bird_move.birdFall()
-                game_bird.rotation_angle -= 5
-                if game_bird.rotation_angle < -90:
-                    game_bird.rotation_angle = -90
-                    
-            elif int(game_birdspeed) < 0:
+            if jump:
                 game_bird.rect.y = bird_move.birdJump()
+                
+            if int(game_birdspeed) > 0:
+                fall_counter += 1/60      
+                
+                if fall_counter > 0.3:
+                    jump = False
+                    game_bird.rect.y = bird_move.birdFall()
+                    game_bird.rotation_angle -= 7
+                    
+                    if game_bird.rotation_angle < -90:
+                        game_bird.rotation_angle = -90  
+                                    
+            elif int(game_birdspeed) < 0:
                 game_bird.rotation_angle += 20
-                if game_bird.rotation_angle > 45:
-                    game_bird.rotation_angle = 45
-
+                
+                if game_bird.rotation_angle > 30:
+                    game_bird.rotation_angle = 30
                 
             game_bird.drawJumpBird()
+
     
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))

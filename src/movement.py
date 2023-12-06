@@ -21,7 +21,7 @@ class Movement:
         return self.x
     
     def birdJump(self):
-        self.y = self.y -(50*self.t)+ ((1/2) * (80) * ((self.t) ** 2))
+        self.y = self.y -(25*self.t)+ ((1/2) * (80) * ((self.t) ** 2))
         return self.y
     
     def birdFall(self):
@@ -29,7 +29,7 @@ class Movement:
         return self.y
     
     def birdSpeed(self):
-        self.speed = -50+ (80*self.t)
+        self.speed = -25+ (80*self.t)
         return self.speed
 
     def groundMove(self):
