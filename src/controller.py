@@ -169,6 +169,9 @@ class Controller:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     bird_move.t = 0 
 
+                    fall_counter = 0
+                    jump = True
+
                 elif event.type == pygame.QUIT:
                     pygame.quit()
 
@@ -206,6 +209,8 @@ class Controller:
                 if pygame.sprite.collide_rect(game_bird, b):
                     self.state = "END"
                     print("hi")
+                    
+                    
                 if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
                     score = str(int(self.score_count))                  
@@ -220,21 +225,28 @@ class Controller:
             
             game_birdspeed = bird_move.birdSpeed()
 
-            
-            if int(game_birdspeed) > 0:
-                game_bird.rect.y = bird_move.birdFall()
-                game_bird.rotation_angle -= 5
-                if game_bird.rotation_angle < -90:
-                    game_bird.rotation_angle = -90
-                    
-            elif int(game_birdspeed) < 0:
+            if jump:
                 game_bird.rect.y = bird_move.birdJump()
+                
+            if int(game_birdspeed) > 0:
+                fall_counter += 1/60      
+                
+                if fall_counter > 0.3:
+                    jump = False
+                    game_bird.rect.y = bird_move.birdFall()
+                    game_bird.rotation_angle -= 7
+                    
+                    if game_bird.rotation_angle < -90:
+                        game_bird.rotation_angle = -90  
+                                    
+            elif int(game_birdspeed) < 0:
                 game_bird.rotation_angle += 20
-                if game_bird.rotation_angle > 45:
-                    game_bird.rotation_angle = 45
-
+                
+                if game_bird.rotation_angle > 30:
+                    game_bird.rotation_angle = 30
                 
             game_bird.drawJumpBird()
+
     
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))
