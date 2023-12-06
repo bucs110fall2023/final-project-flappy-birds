@@ -158,7 +158,7 @@ class Controller:
             
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    bird_move.t = 0
+                    bird_move.t = 0 
 
                 elif event.type == pygame.QUIT:
                     pygame.quit()
