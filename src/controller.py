@@ -205,15 +205,14 @@ class Controller:
                         self.bottompipes.add(Pipe(self.screen, "assets/bottompipe.png", background_width, y))
                     if b.imgpath == "assets/toppipe.png":
                         self.bottompipes.add(Pipe(self.screen, "assets/toppipe.png", background_width, y - space_in_between - b.image.get_size()[1]))
-
-                if pygame.sprite.collide_rect(game_bird, b):
-                    self.state = "END"
-                    print("hi")
-                    
-                    
+                            
                 if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
-                    score = str(int(self.score_count))                  
+                    score = str(int(self.score_count)) 
+                    
+            if pygame.sprite.spritecollide(game_bird, self.bottompipes, False, pygame.sprite.collide_mask):
+                self.state = "END"
+                print("hi")                 
                     
             if pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
