@@ -157,7 +157,8 @@ class Controller:
         font_size = int(background_width/8)
         custom_font = pygame.font.Font('assets/flappybirdnums.ttf', font_size)
         self.score_count = 0
-        score = str(self.score_count)       
+        score = str(self.score_count)   
+        score_write = False    
 
 
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
@@ -211,12 +212,15 @@ class Controller:
                                         
             if pygame.sprite.spritecollide(game_bird, self.bottompipes, False, pygame.sprite.collide_mask):
                 self.state = "END"
+                score_write = True
                 print("hi")                 
                     
             if pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
+                score_write = True
             elif pygame.sprite.collide_rect(game_bird, ground2):
                 self.state  = "END"
+                score_write = True
             
             bird_move.t += 1/40
             
@@ -241,6 +245,17 @@ class Controller:
                 
                 if game_bird.rotation_angle > 30:
                     game_bird.rotation_angle = 30
+                    
+            if score_write == True:
+                score_text = open("etc/highscore.txt") 
+                num_score = score_text.readline()
+                score_text.close()
+                print(num_score)
+                
+                if int(num_score) < self.score_count:   
+                    highscore_set = open("etc/highscore.txt", 'w') 
+                    highscore_set.write(score)
+                    highscore_set.close()
                 
             game_bird.drawJumpBird()
   
