@@ -70,6 +70,21 @@ class Controller:
         
         
         while self.state == "MENU" :
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if play_button.collidepoint(event.pos):
+                        play_button_draw = False
+                        exit_button_draw = False
+                        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+                        bird_drawn = True
+                    elif exit_button.collidepoint(event.pos):
+                        pygame.quit()
+                if event.type == pygame.QUIT:
+                        pygame.quit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    if bird:
+                        bird.kill()
+                        self.state = "GAME"
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -93,23 +108,7 @@ class Controller:
             if exit_button_draw == True:
                 exit_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/2) + 10, (background_height + ground_height)/2, background_width/6, ground_height))
                 exit_button_border = pygame.draw.rect(self.screen, "black", (((background_width/2) + 10) - border_width , ((background_height + ground_height)/2) - border_width, (background_width/6) + (2* border_width), (ground_height)+ (2* border_width)), border_width)
-                
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if play_button.collidepoint(event.pos):
-                        play_button_draw = False
-                        exit_button_draw = False
-                        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
-                        bird_drawn = True
-                    elif exit_button.collidepoint(event.pos):
-                        pygame.quit()
-                if event.type == pygame.QUIT:
-                        pygame.quit()
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    if bird:
-                        bird.kill()
-                        self.state = "GAME"
-                        
+               
             if bird_drawn == True:
                 bird.drawBird()
                 
@@ -213,15 +212,16 @@ class Controller:
             if pygame.sprite.spritecollide(game_bird, self.bottompipes, False, pygame.sprite.collide_mask):
                 self.state = "END"
                 score_write = True
-                print("hi")                 
-                    
-            if pygame.sprite.collide_rect(game_bird, ground1):
+                self.bottompipes.empty()
+                print("hi")                    
+            elif pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
                 score_write = True
+                self.bottompipes.empty()
             elif pygame.sprite.collide_rect(game_bird, ground2):
                 self.state  = "END"
                 score_write = True
-            
+                self.bottompipes.empty()
             bird_move.t += 1/40
             
             game_birdspeed = bird_move.birdSpeed()
@@ -281,15 +281,45 @@ class Controller:
         ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
         ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
         
+        play_buttonimg = pygame.image.load("assets/button.png")
+        scaled_button = pygame.transform.scale(play_buttonimg, (background_width/6, ground_height))
+        
         self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
+        
+        font_size = int(background_width/15)
+        wordscore_font = pygame.font.Font('assets/FlappyBirdy.ttf', font_size)
+        numscore_font = pygame.font.Font('assets/flappybirdnums.ttf', font_size)
+
+        highscore_text = "HighScore"
+        scoreref = open("etc/highscore.txt")
+        highscore_num = scoreref.read()
+        score_text = "Score"
+        score_num = str(int(self.score_count))
+        
         
         menu_ypos = background_height + ground_height
         border_width = 5
+        menu_draw = True
+        bird_drawn = False
+        bird = None
+        
         
         while self.state == "END":
+            
             for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if play_button1.collidepoint(event.pos):
+                        menu_draw = False
+                        bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
+                        bird_drawn = True
+                    elif exit_button1.collidepoint(event.pos):
+                        pygame.quit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    if bird:
+                        bird.kill()
+                        self.state = "GAME"
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                        pygame.quit()
                     
             self.screen.fill("black")
             background1.drawBackground()
@@ -301,18 +331,45 @@ class Controller:
             ground1.rect.x = ground1_move.groundMove()
             ground2.drawGround()
             ground2.rect.x = ground2_move.groundMove()
-            
-            end_menuscore = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , menu_ypos, background_width/3, background_height/2))
-            border_end_menuscore = pygame.draw.rect(self.screen, "black", (end_menuscore.x - border_width , end_menuscore.y - border_width , end_menuscore.width + (2* border_width), end_menuscore.height + (2* border_width)), border_width)
 
-            play_button1 = pygame.draw.rect(self.screen, (223, 218, 151), (end_menuscore.x , end_menuscore.y + end_menuscore.height + 20 , background_width/6, ground_height))
-            border_play_button1 = pygame.draw.rect(self.screen, "black", (play_button1.x - border_width , play_button1.y - border_width , play_button1.width + (2* border_width), play_button1.height + (2* border_width)), border_width)
-            
             
             if menu_ypos < background_height/4:
                 menu_ypos == background_width/4
             else:
                 menu_ypos -= 40
+                
+            if menu_draw == True:
+                
+                end_menuscore = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , menu_ypos, background_width/3, background_height/2))
+                border_end_menuscore = pygame.draw.rect(self.screen, "black", (end_menuscore.x - border_width , end_menuscore.y - border_width , end_menuscore.width + (2* border_width), end_menuscore.height + (2* border_width)), border_width)
+
+                play_button1 = pygame.draw.rect(self.screen, (223, 218, 151), (end_menuscore.x -10 , end_menuscore.y + end_menuscore.height + 20 , background_width/6, ground_height))
+                border_play_button1 = pygame.draw.rect(self.screen, "black", (play_button1.x - border_width , play_button1.y - border_width , play_button1.width + (2* border_width), play_button1.height + (2* border_width)), border_width)
+                
+                exit_button1 = pygame.draw.rect(self.screen, (223, 218, 151), (play_button1.x + play_button1.width + 20 , play_button1.y , play_button1.width, play_button1.height))
+                border_exit_button1 = pygame.draw.rect(self.screen, "black", (exit_button1.x - border_width , exit_button1.y - border_width , exit_button1.width + (2* border_width), exit_button1.height + (2* border_width)), border_width)
+                
+                play_triangle_coords = [(play_button1.x + play_button1.width/4, play_button1.y + play_button1.height/6),(play_button1.x + play_button1.width/4, play_button1.y + (2*play_button1.width)/3),(play_button1.x + (4*play_button1.width)/5, play_button1.y + play_button1.height/2)]
+                pygame.draw.polygon(self.screen, "green", play_triangle_coords)
+                
+                x_quit_coords = [(exit_button1.x + exit_button1.width/4, exit_button1.y + exit_button1.height/6),(exit_button1.x + (4*exit_button1.width)/5, exit_button1.y + (2*exit_button1.width)/3), (exit_button1.x + exit_button1.width/4, exit_button1.y + (2*exit_button1.width)/3), (exit_button1.x + (4*exit_button1.width)/5,exit_button1.y + exit_button1.height/6)]
+                pygame.draw.line(self.screen, "red", x_quit_coords[0], x_quit_coords[1], 20)
+                pygame.draw.line(self.screen, "red", x_quit_coords[2], x_quit_coords[3], 20 )
+                
+                
+                highscore_text_rendered = wordscore_font.render(highscore_text, True, "black")
+                highscore_num_rendered = numscore_font.render(highscore_num, True, "black")
+                self.screen.blit(highscore_text_rendered, (end_menuscore.x + 20 , end_menuscore.y + end_menuscore.height/6))
+                self.screen.blit(highscore_num_rendered, (end_menuscore.x + end_menuscore.width/6 , end_menuscore.y + (2*end_menuscore.height)/5))
+                
+                score_text_rendered = wordscore_font.render(score_text, True, "black") 
+                score_num_rendered = numscore_font.render(score_num, True, "black")
+                self.screen.blit(score_text_rendered, (int(end_menuscore.x + ((2* end_menuscore.x)/3)) , end_menuscore.y + end_menuscore.height/6))
+                self.screen.blit(score_num_rendered, (end_menuscore.x + (5 * end_menuscore.width)/8 , end_menuscore.y + (2*end_menuscore.height)/5))
+
+               
+            if bird_drawn == True:
+                bird.drawBird()
 
             pygame.display.flip()
             clock.tick(60)
