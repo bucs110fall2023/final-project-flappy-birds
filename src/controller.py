@@ -174,7 +174,6 @@ class Controller:
 
                 elif event.type == pygame.QUIT:
                     pygame.quit()
-
             
             self.screen.fill("black")
             background1.drawBackground()
@@ -209,7 +208,7 @@ class Controller:
                 if int(b.rect.x) == int(game_bird.rect.x):
                     self.score_count += 0.5
                     score = str(int(self.score_count)) 
-                    
+                                        
             if pygame.sprite.spritecollide(game_bird, self.bottompipes, False, pygame.sprite.collide_mask):
                 self.state = "END"
                 print("hi")                 
@@ -218,7 +217,6 @@ class Controller:
                 self.state = "END"
             elif pygame.sprite.collide_rect(game_bird, ground2):
                 self.state  = "END"
-            
             
             bird_move.t += 1/40
             
@@ -245,8 +243,7 @@ class Controller:
                     game_bird.rotation_angle = 30
                 
             game_bird.drawJumpBird()
-
-    
+  
             text_rendered = custom_font.render(score, True, "black")  
             self.screen.blit(text_rendered, ((4*background_width)/9, background_height/12))
                   
@@ -254,7 +251,53 @@ class Controller:
             clock.tick(60)
           
     def endloop(self):
+        
+        clock = pygame.time.Clock()
+        
+        background1 = Background(self.screen, "assets/background.png")
+        back1_move = Movement(background1.x, background1.y, background1.image)
+        background_width, background_height = background1.image.get_size()
+        background2 = Background(self.screen, "assets/background.png", background_width)
+        back2_move = Movement(background2.x, background2.y, background2.image)
+
+        ground1 = Ground(self.screen, "assets/ground.png", 0, background_height)
+        ground1_move = Movement(ground1.rect.x, ground1.rect.y, ground1.image)
+        ground_width, ground_height = ground1.image.get_size()       
+        ground2 = Ground(self.screen, "assets/ground.png", ground_width, background_height)
+        ground2_move = Movement(ground2.rect.x, ground2.rect.y, ground2.image)
+        
+        self.screen = pygame.display.set_mode((background_width, background_height + ground_height ))
+        
+        menu_ypos = background_height + ground_height
+        border_width = 5
+        
         while self.state == "END":
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    
+            self.screen.fill("black")
+            background1.drawBackground()
+            background1.x = back1_move.backgroundMove()
+            background2.drawBackground()
+            background2.x = back2_move.backgroundMove()
+            
+            ground1.drawGround()
+            ground1.rect.x = ground1_move.groundMove()
+            ground2.drawGround()
+            ground2.rect.x = ground2_move.groundMove()
+            
+            end_menuscore = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , menu_ypos, background_width/3, background_height/2))
+            border_end_menuscore = pygame.draw.rect(self.screen, "black", (end_menuscore.x - border_width , end_menuscore.y - border_width , end_menuscore.width + (2* border_width), end_menuscore.height + (2* border_width)), border_width)
+
+            play_button1 = pygame.draw.rect(self.screen, (223, 218, 151), (end_menuscore.x , end_menuscore.y + end_menuscore.height + 20 , background_width/6, ground_height))
+            border_play_button1 = pygame.draw.rect(self.screen, "black", (play_button1.x - border_width , play_button1.y - border_width , play_button1.width + (2* border_width), play_button1.height + (2* border_width)), border_width)
+            
+            
+            if menu_ypos < background_height/4:
+                menu_ypos == background_width/4
+            else:
+                menu_ypos -= 40
+
+            pygame.display.flip()
+            clock.tick(60)
