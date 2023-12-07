@@ -3,7 +3,11 @@ import pygame
 class Bird(pygame.sprite.Sprite):
     def __init__(self, surface, imgpath, x, y):
         super().__init__()
-
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         self.imgpath = str(imgpath)
         self.surface = surface
         self.rotation_angle = 0
@@ -19,9 +23,19 @@ class Bird(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
     
     def drawBird(self):
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         self.surface.blit(self.image, (self.rect.x, self.rect.y)) 
     
     def drawJumpBird(self):
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         self.rotated_image = pygame.transform.rotate(self.image, self.rotation_angle)
         self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         

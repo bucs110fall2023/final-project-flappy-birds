@@ -10,12 +10,22 @@ from src.bird import Bird
 class Controller:
 
     def __init__(self):
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         pygame.init()
         self.screen = pygame.display.set_mode()
         
         self.bottompipes = pygame.sprite.Group()
     
     def mainloop(self):
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
 
         running = True
         while running:
@@ -24,7 +34,7 @@ class Controller:
                 pass
 
             self.state = "MENU"
-            x = 0
+
             while True:
                 if self.state == "MENU":
                     self.menuloop()
@@ -35,10 +45,13 @@ class Controller:
                       
 
     def menuloop(self):
-
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         clock = pygame.time.Clock()
-        
-        
+          
         background1 = Background(self.screen, "assets/background.png")
         back1_move = Movement(background1.x, background1.y, background1.image)
         background_width, background_height = background1.image.get_size()
@@ -65,16 +78,14 @@ class Controller:
         
         bird = None
         bird_drawn = False
-        play_button_draw = True
-        exit_button_draw = True
-        
+        menu_draw = True
         
         while self.state == "MENU" :
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if play_button.collidepoint(event.pos):
-                        play_button_draw = False
-                        exit_button_draw = False
+                        menu_draw = False
+
                         bird = Bird(self.screen, "assets/blueflappybird.png",background_width/3, background_height/2 )
                         bird_drawn = True
                     elif exit_button.collidepoint(event.pos):
@@ -97,25 +108,35 @@ class Controller:
             ground2.drawGround()
             ground2.rect.x = ground2_move.groundMove()
         
-            if play_button_draw == True:
+            if menu_draw == True:
                 
                 text_rendered = custom_font.render(text, True, "black")  
                 self.screen.blit(text_rendered, (background_width/4, background_height/3))
                 play_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/3) - 10 , (background_height + ground_height)/2, background_width/6, ground_height))
                 border_play_button = pygame.draw.rect(self.screen, "black", (((background_width/3) - 10) - border_width , ((background_height + ground_height)/2)- border_width , (background_width/6) + (2* border_width), (ground_height) + (2* border_width)), border_width)
-                self.screen.blit(scaled_button, ((background_width/3) - 10 , (background_height + ground_height)/2))
-                
-            if exit_button_draw == True:
+
                 exit_button = pygame.draw.rect(self.screen, (223, 218, 151), ((background_width/2) + 10, (background_height + ground_height)/2, background_width/6, ground_height))
                 exit_button_border = pygame.draw.rect(self.screen, "black", (((background_width/2) + 10) - border_width , ((background_height + ground_height)/2) - border_width, (background_width/6) + (2* border_width), (ground_height)+ (2* border_width)), border_width)
-               
-            if bird_drawn == True:
+
+                play_triangle_coords = [(play_button.x + play_button.width/4, play_button.y + play_button.height/6),(play_button.x + play_button.width/4, play_button.y + (2*play_button.width)/3),(play_button.x + (4*play_button.width)/5, play_button.y + play_button.height/2)]
+                pygame.draw.polygon(self.screen, "green", play_triangle_coords)
+                
+                x_quit_coords = [(exit_button.x + exit_button.width/4, exit_button.y + exit_button.height/6),(exit_button.x + (4*exit_button.width)/5, exit_button.y + (2*exit_button.width)/3), (exit_button.x + exit_button.width/4, exit_button.y + (2*exit_button.width)/3), (exit_button.x + (4*exit_button.width)/5,exit_button.y + exit_button.height/6)]
+                pygame.draw.line(self.screen, "red", x_quit_coords[0], x_quit_coords[1], 20)
+                pygame.draw.line(self.screen, "red", x_quit_coords[2], x_quit_coords[3], 20 )
+                
+            if bird_drawn == True:    
                 bird.drawBird()
                 
             pygame.display.flip()
             clock.tick(60)  
         
     def gameloop(self):
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         
         fall_counter = 0
         jump = True
@@ -145,6 +166,7 @@ class Controller:
         ty = by - space_in_between - bottompipe.image.get_size()[1]
         toppipe = Pipe(self.screen, "assets/toppipe.png", background_width, ty)
         self.bottompipes.add(toppipe)
+        
         ty2 = b2y - space_in_between - bottompipe2.image.get_size()[1]
         toppipe2 = Pipe(self.screen, "assets/toppipe.png", (background_width + (background_width)/2)-2, ty2)
         self.bottompipes.add(toppipe2)
@@ -213,7 +235,7 @@ class Controller:
                 self.state = "END"
                 score_write = True
                 self.bottompipes.empty()
-                print("hi")                    
+                  
             elif pygame.sprite.collide_rect(game_bird, ground1):
                 self.state = "END"
                 score_write = True
@@ -250,7 +272,6 @@ class Controller:
                 score_text = open("etc/highscore.txt") 
                 num_score = score_text.readline()
                 score_text.close()
-                print(num_score)
                 
                 if int(num_score) < self.score_count:   
                     highscore_set = open("etc/highscore.txt", 'w') 
@@ -266,7 +287,11 @@ class Controller:
             clock.tick(60)
           
     def endloop(self):
-        
+        """
+        general function description
+        args: (type) description
+        return: (type) description
+        """
         clock = pygame.time.Clock()
         
         background1 = Background(self.screen, "assets/background.png")
