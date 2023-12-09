@@ -4,9 +4,8 @@ class Bird(pygame.sprite.Sprite):
     def __init__(self, surface, imgpath, x, y):
         super().__init__()
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        intializes the variables neccesary to draw the bird on the screen and makes the bird a sprite
+        args: args: surface: the intializes screen the program is drawn to, imgpath(str): the location to the image in the files, x=0(int): the initial x position of the bird, y=0(int): the initial y position of the bird
         """
         self.imgpath = str(imgpath)
         self.surface = surface
@@ -24,18 +23,15 @@ class Bird(pygame.sprite.Sprite):
     
     def drawBird(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        blits and unrotated bird onto the screen
         """
         self.surface.blit(self.image, (self.rect.x, self.rect.y)) 
     
     def drawJumpBird(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        blits the bird onto the screen and rotates it by a given angle
         """
+       
         self.rotated_image = pygame.transform.rotate(self.image, self.rotation_angle)
         self.surface.blit(self.rotated_image, (self.rect.x, self.rect.y))
         

@@ -4,9 +4,8 @@ class Pipe(pygame.sprite.Sprite):
     def __init__(self, surface, imgpath, x, y):
         super().__init__()
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        intializes the variables neccesary to draw the pipe on the screen and makes the bird a sprite
+        args: args: surface: the intializes screen the program is drawn to, imgpath(str): the location to the image in the files, x=0(int): the initial x position of the pipe, y=0(int): the initial y position of the pipe
         """
         self.imgpath = imgpath
         image = pygame.image.load(self.imgpath)
@@ -22,8 +21,6 @@ class Pipe(pygame.sprite.Sprite):
    
     def drawPipe(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        blits the pipe onto the screen
         """
         self.surface.blit(self.image, (self.rect.x, self.rect.y))

@@ -5,9 +5,8 @@ class Ground(pygame.sprite.Sprite):
     def __init__(self, surface, imgpath, x = 0 , y = 0):
         super().__init__()
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        intializes the variables neccesary to draw the ground on the screen and makes the ground a sprite
+        args: args: surface: the intializes screen the program is drawn to, imgpath(str): the location to the image in the files, x=0(int): the initial x position of the ground, y=0(int): the initial y position of the ground
         """
         self.imgpath = str(imgpath)
         self.surface = surface
@@ -22,8 +21,6 @@ class Ground(pygame.sprite.Sprite):
         
     def drawGround(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        blits the ground onto the screen
         """
         self.surface.blit(self.image, (self.rect.x, self.rect.y))

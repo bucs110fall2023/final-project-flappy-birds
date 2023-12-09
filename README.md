@@ -18,6 +18,8 @@ A game where a an object is continuosly falling unless the user makes the object
 ***    
 
 ## GUI Design
+1. Interactive button that start the game or quit the program bnoth at the beginning and end 
+2. Score trackers that display current score and all time best score
 
 ### Initial Design
 
@@ -25,9 +27,15 @@ A game where a an object is continuosly falling unless the user makes the object
 
 ### Final Design
 
-![final gui](assets/finalgui.jpg)
+![final gui](assets/finalgui1.jpg)(assets/finalgui2.jpg)(assets/finalgui3.jpg)
 
 ## Program Design
+1. Interactive Menu
+2. Game where the use controls the bird's movement via space bar and must navigate through obstacles
+3. Live score counter duting the gameplay
+4. All time best score tracker, is kept even when the program is quit
+5. Movement using space bar
+6. Game over upon collision with pipes or the ground
 
 ### Features
 
@@ -39,7 +47,12 @@ A game where a an object is continuosly falling unless the user makes the object
 
 ### Classes
 
-- << You should have a list of each of your classes with a description >>
+- 1. background: draws the background onto the screen
+  2. bird: draws the bird onto the screen
+  3. controller: contains application logic and event Handling
+  4. ground: draws the ground onto the screen
+  5. movement: resposible for updating the positions of every object necessary for their movement 
+  6. pipe: draws the pipe on the screen
 
 ## ATP
 1. Test Case 1: Starting Game

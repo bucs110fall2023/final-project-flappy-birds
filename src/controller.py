@@ -11,9 +11,7 @@ class Controller:
 
     def __init__(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        initializes the pygame and the screen. also makes the sprite group for the pipes
         """
         pygame.init()
         self.screen = pygame.display.set_mode()
@@ -22,9 +20,7 @@ class Controller:
     
     def mainloop(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        Runs a loop that checks for the state of the program if it is in thhe menu game or end menu
         """
 
         running = True
@@ -46,9 +42,8 @@ class Controller:
 
     def menuloop(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        Makes an interactive menu screen
+
         """
         clock = pygame.time.Clock()
           
@@ -133,9 +128,7 @@ class Controller:
         
     def gameloop(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        makes and interactive game where you jump by presssing space and must navigate through obstavles
         """
         
         fall_counter = 0
@@ -288,9 +281,7 @@ class Controller:
           
     def endloop(self):
         """
-        general function description
-        args: (type) description
-        return: (type) description
+        creates an interactive end game menu, gives the score and current high score. 
         """
         clock = pygame.time.Clock()
         
